@@ -1,21 +1,22 @@
 <template>
     <div class="calculadora">
-        <resul />
         <botoes />
     </div>
 </template>
 <script>
 import Botoes from './botoes.vue'
-import resul from './resul.vue'
 export default {
     name: `calculadora`,
-    components: { resul, Botoes}
+    components: {Botoes}
 }
 </script>
 <style>
     .calculadora{
         background-color: black ;
-        width: 250px;
-        height: 500px;
+        width: 300px;
+        height: 600px;
+        padding: 20px;
+
     }
+
 </style>
