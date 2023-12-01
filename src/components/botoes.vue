@@ -1,6 +1,6 @@
 <template>
   <div class="resultado">
-    <p id="resul">{{num1}} {{operador}} {{num2}}</p>
+    <p id="resul">{{ num1 }} {{ operador }} {{ num2 }}</p>
   </div>
   <div class="componente-1">
     <input type="button" value="AC" id="reset" @click="reset()" />
@@ -25,8 +25,25 @@
     <input type="button" value="/" @click="operadores('/')" />
   </div>
   <div class="componente-5">
+    <input
+      type="button"
+      v-if="Vizualizador !== 0"
+      id="historico"
+      @click="VizualizadorHistórico;"
+    />
+    <div
+      class="historico"
+      v-for="(contas, index) in historico"
+      :key="index"
+      v-else
+    >
+      <input type="button" value="voltar" @click="voltar" />
+      <ul>
+        <li>{{ contas }}</li>
+      </ul>
+    </div>
     <input type="button" value="0" @click="numeros('0')" />
-    <input type="button" value="." @click="ponto()"/>
+    <input type="button" value="." @click="ponto()" />
     <input type="button" value="=" id="calcular" @click="resul()" />
   </div>
 </template>
@@ -39,22 +56,23 @@ export default {
       operador: "",
       num2: "",
       resultado: "",
+      historico: [],
+      contas: "",
+      Vizualizador: -1,
     };
   },
   methods: {
     numeros(Num) {
       if (this.operador) {
-        if(this.num2.length <= 10)
-        this.num2 += Num;
-      else{
-        alert(`voce nao podera passar do limite`)
-      }
-      } else {
-        if(this.num1.length <= 10){
-          this.num1 += Num;
+        if (this.num2.length <= 10) this.num2 += Num;
+        else {
+          alert(`voce nao podera passar do limite`);
         }
-        else{
-          alert(`voce passou do limite`)
+      } else {
+        if (this.num1.length <= 10) {
+          this.num1 += Num;
+        } else {
+          alert(`voce passou do limite`);
         }
       }
     },
@@ -63,36 +81,42 @@ export default {
     },
     resul() {
       if (this.operador === "+") {
-        (this.resultado = Number(this.num1) + Number(this.num2))
+        this.resultado = Number(this.num1) + Number(this.num2);
       } else if (this.operador === "-") {
         this.resultado = Number(this.num1) - Number(this.num2);
       } else if (this.operador === "*") {
-        this.resultado = Number(this.num1) * Number(this.num2)
+        this.resultado = Number(this.num1) * Number(this.num2);
       } else {
         this.resultado = Number(this.num1) / Number(this.num2);
       }
       this.num1 = this.resultado.toString();
-      this.operador = ''
-      this.num2 = ''
+      this.operador = "";
+      this.num2 = "";
     },
     reset() {
-        (this.resultado = ""),
+      (this.resultado = ""),
         (this.num1 = ""),
         (this.num2 = ""),
-        (this.operador = "")
+        (this.operador = "");
+      this.historico = [];
     },
-    ponto(){
-      if(this.operador){
-        if(!this.num2.includes('.')){
-           this.num2 += '.'
+    ponto() {
+      if (this.operador) {
+        if (!this.num2.includes(".")) {
+          this.num2 += ".";
+        }
+      } else {
+        if (!this.num1.includes(".")) {
+          this.num1 += ".";
         }
       }
-      else{
-        if(!this.num1.includes('.')){
-          this.num1 += '.'
-        }
-      }
-    }
+    },
+    VizualizadorHistórico: function () {
+      this.Vizualizador = 0;
+    },
+    voltar: function () {
+      this.Vizualizador = -1;
+    },
   },
 };
 </script>
@@ -100,9 +124,16 @@ export default {
 .resultado {
   height: 100px;
   display: flex;
-  align-items: center;
-  justify-content: end;
+  flex-direction: column;
+  align-items: end;
+  justify-content: center;
   border: 1px solid white;
+}
+.resultado ul {
+  display: none;
+}
+#historico {
+  background-color: white;
 }
 #resul {
   color: cornflowerblue;
@@ -187,5 +218,14 @@ export default {
 #calcular {
   color: white;
   background-color: cornflowerblue;
+}
+.historico {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+}
+.historico ul {
+  color: cornflowerblue;
+  list-style: none;
 }
 </style>
