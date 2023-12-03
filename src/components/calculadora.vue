@@ -1,6 +1,7 @@
 <template>
     <div class="calculadora">
         <botoes />
+        
     </div>
 </template>
 <script>
@@ -16,7 +17,6 @@ export default {
         width: 300px;
         height: 600px;
         padding: 20px;
-
     }
 
 </style>
